@@ -5,7 +5,6 @@ class ServiceUtils {
       "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhOWMzYmU1ZmNhZTIwY2UyMDFlZDM2OTQyYzI5N2JmMyIsInN1YiI6IjYxOGZlOGFkNjNlNmZiMDA2MzczYTQyZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7SAp4BoCRffNKC322JJE7ltmXBp_Cw9Z6CDoKATQIUQ";
 
   static const String _apiPath = "https://api.themoviedb.org/3";
-  static const String _imagePath = "https://image.tmdb.org/t/p/";
 
   static const String genres = "/genre";
   static const String movies = "/movie";

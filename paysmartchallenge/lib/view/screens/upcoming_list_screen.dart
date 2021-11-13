@@ -14,16 +14,20 @@ class UpcomingListScreen extends StatefulWidget {
 
 class _UpcomingListScreenState extends State<UpcomingListScreen> {
   final _bloc = UpcomingListBloc();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    _bloc.init();
+    _bloc.refreshList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Upcoming Movies"),
+      ),
       body: SafeArea(
         child: _buildBody(context),
       ),
@@ -40,6 +44,8 @@ class _UpcomingListScreenState extends State<UpcomingListScreen> {
           );
         }
         return Scrollbar(
+          key: const ValueKey<int>(1),
+          controller: _scrollController,
           child: ListView.builder(
             itemCount: _bloc.list.length,
             itemBuilder: (context, index) {

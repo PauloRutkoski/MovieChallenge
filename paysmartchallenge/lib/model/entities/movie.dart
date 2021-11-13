@@ -5,12 +5,10 @@ class Movie {
   String title;
   String overview;
   String posterPath;
-  List<int> genreIds;
+  List<Genre> genres;
   DateTime release;
 
-  List<Genre>? genres;
-
-  Movie(this.id, this.title, this.overview, this.posterPath, this.genreIds,
+  Movie(this.id, this.title, this.overview, this.posterPath, this.genres,
       this.release);
 
   factory Movie.fromJson(Map<String, dynamic> json) {
@@ -19,7 +17,7 @@ class Movie {
         json['title'],
         json['overview'],
         json['poster_path'],
-        List<int>.from(json['genre_ids']),
+        json['genres'],
         DateTime.parse(json['release_date']));
   }
 }

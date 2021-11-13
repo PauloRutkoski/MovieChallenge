@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:paysmartchallenge/model/entities/genre.dart';
 import 'package:paysmartchallenge/model/entities/movie.dart';
 import 'package:paysmartchallenge/view/utils/formatter.dart';
+import 'package:paysmartchallenge/view/utils/image_utils.dart';
 
 class MovieCard extends StatelessWidget {
   final Movie movie;
@@ -12,6 +13,8 @@ class MovieCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(3.0),
       child: Card(
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
@@ -26,10 +29,16 @@ class MovieCard extends StatelessWidget {
   }
 
   Widget _image() {
-    return Container(
+    return SizedBox(
       width: 100,
       height: 150,
-      color: Colors.red,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8.0),
+        child: Image.network(
+          ImageUtils.getUri(movie.posterPath),
+          fit: BoxFit.cover,
+        ),
+      ),
     );
   }
 
@@ -88,11 +97,11 @@ class MovieCard extends StatelessWidget {
 
   String _genresText() {
     String text = "";
-    for (int i = 0; i < movie.genres!.length; i++) {
+    for (int i = 0; i < movie.genres.length; i++) {
       if (i != 0) {
-        text += "/";
+        text += ", ";
       }
-      Genre genre = movie.genres![i];
+      Genre genre = movie.genres[i];
       text += genre.name;
     }
     return text;
