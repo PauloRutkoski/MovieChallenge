@@ -1,0 +1,4 @@
+enum StateEnum {
+  loading,
+  idle,
+}

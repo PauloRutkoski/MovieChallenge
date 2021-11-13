@@ -4,6 +4,7 @@ import 'package:paysmartchallenge/model/entities/genre.dart';
 import 'package:paysmartchallenge/model/entities/movie.dart';
 import 'package:paysmartchallenge/model/service/genre_service.dart';
 import 'package:paysmartchallenge/model/service/movie_service.dart';
+import 'package:paysmartchallenge/view/utils/state.dart';
 import 'package:rxdart/rxdart.dart';
 
 class UpcomingListBloc {
@@ -11,26 +12,25 @@ class UpcomingListBloc {
   final _movieService = MovieService();
   final _genreService = GenreService();
   List<Genre> _genres = [];
+  List<Movie> list = [];
 
-  final _list = BehaviorSubject<List<Movie>>.seeded([]);
+  final _state = BehaviorSubject<StateEnum>.seeded(StateEnum.idle);
 
-  Stream<List<Movie>> get listStream => _list.stream;
-
-  List<Movie> get list => _list.value;
-
-  void setList(List<Movie> list) {
-    _list.sink.add(list);
-  }
+  Stream get stateStream => _state.stream;
+  void setState(StateEnum state) => _state.sink.add(state);
 
   Future<void> init() async {
+    setState(StateEnum.loading);
     _genres = await _genreService.findAll();
+    await refreshList();
   }
 
   Future<void> refreshList() async {
+    setState(StateEnum.loading);
     List<Movie> movies = await _movieService.findUpcoming(page);
     defineGenres(movies);
     list.addAll(movies);
-    setList(list);
+    setState(StateEnum.idle);
   }
 
   void defineGenres(List<Movie> movies) {
@@ -45,9 +45,5 @@ class UpcomingListBloc {
         }
       }
     }
-  }
-
-  void dispose() {
-    _list.close();
   }
 }

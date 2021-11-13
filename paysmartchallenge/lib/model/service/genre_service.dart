@@ -14,7 +14,7 @@ class GenreService {
       return [];
     }
     Map<String, dynamic> body = json.decode(response.body);
-    return _decode(body['results']);
+    return _decode(body["genres"]);
   }
 
   _decode(List<dynamic> maps) {
