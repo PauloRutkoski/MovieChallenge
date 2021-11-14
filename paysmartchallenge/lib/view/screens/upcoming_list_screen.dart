@@ -42,7 +42,7 @@ class _UpcomingListScreenState extends State<UpcomingListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Upcoming Movies"),
+        title: const Text("Movies"),
       ),
       body: SafeArea(
         child: Column(
@@ -57,6 +57,7 @@ class _UpcomingListScreenState extends State<UpcomingListScreen> {
 
   Widget _buildSearch(BuildContext context) {
     return SearchWidget(
+      hintText: "Search for Movies",
       controller: _searchController,
       onChange: (text) => _bloc.query = text,
       onClean: () async {
