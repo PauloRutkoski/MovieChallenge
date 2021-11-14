@@ -4,6 +4,7 @@ import 'package:paysmartchallenge/controller/upcoming_list_bloc.dart';
 import 'package:paysmartchallenge/model/entities/movie.dart';
 import 'package:paysmartchallenge/view/screens/upcoming_view_screen.dart';
 import 'package:paysmartchallenge/view/utils/nav.dart';
+import 'package:paysmartchallenge/view/utils/notify.dart';
 import 'package:paysmartchallenge/view/utils/state.dart';
 import 'package:paysmartchallenge/view/widgets/movie_card.dart';
 import 'package:paysmartchallenge/view/widgets/offline_info.dart';

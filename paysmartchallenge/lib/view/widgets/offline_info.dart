@@ -13,7 +13,7 @@ class OfflineInfo extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(Icons.signal_wifi_off_outlined),
-            const Text("You're offline"),
+            const Text("Connection Failed"),
             if (onReload != null)
               TextButton(
                 onPressed: onReload,

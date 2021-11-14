@@ -1,8 +1,11 @@
 import 'dart:async';
 
 import 'package:connectivity/connectivity.dart';
+import 'package:logger/logger.dart';
 import 'package:paysmartchallenge/model/entities/movie.dart';
 import 'package:paysmartchallenge/model/service/movie_service.dart';
+import 'package:paysmartchallenge/model/service/service_utils.dart';
+import 'package:paysmartchallenge/view/utils/notify.dart';
 import 'package:paysmartchallenge/view/utils/state.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -20,25 +23,27 @@ class UpcomingListBloc {
     setState(StateEnum.loading);
     list = [];
     page = 1;
-    bool connected = await testConnection();
+    bool connected = await ServiceUtils.isConnected();
     if (connected) {
       await refreshList();
-    }
-  }
-
-  Future<bool> testConnection() async {
-    ConnectivityResult result = await Connectivity().checkConnectivity();
-    if (result == ConnectivityResult.none) {
+    } else {
       setState(StateEnum.offline);
-      return false;
     }
-    return true;
   }
 
   Future<void> refreshList() async {
-    List<Movie> movies = await _movieService.findUpcoming(page);
-    list.addAll(movies);
-    setState(StateEnum.idle);
+    try {
+      List<Movie> movies = await _movieService.findUpcoming(page);
+      list.addAll(movies);
+      setState(StateEnum.idle);
+    } on TimeoutException catch (e) {
+      Notify.error("Timeout on search");
+      setState(StateEnum.offline);
+      Logger().e(e);
+    } on Exception catch (e) {
+      Logger().e(e);
+      setState(StateEnum.idle);
+    }
   }
 
   dispose() {

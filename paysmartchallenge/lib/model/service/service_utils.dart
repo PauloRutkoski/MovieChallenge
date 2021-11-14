@@ -1,4 +1,6 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 
 class ServiceUtils {
   static const String _token =
@@ -14,17 +16,25 @@ class ServiceUtils {
     'Content-Type': 'application/json;charset=utf-8',
   };
 
+  static Future<ConnectivityResult> testConnection() async {
+    return await Connectivity().checkConnectivity();
+  }
+
+  static Future<bool> isConnected() async {
+    return await Connectivity().checkConnectivity() != ConnectivityResult.none;
+  }
+
   static Uri getApiUri(String path) {
     String uri = _apiPath + path;
     return Uri.parse(uri);
   }
 
   static Future<http.Response?> doGet(Uri uri) async {
-    http.Response? response = null;
-    try {
-      response = await http.get(uri, headers: headers);
-    } catch (e) {
-      print(e);
+    http.Response? response;
+    if (await ServiceUtils.isConnected()) {
+      response = await http
+          .get(uri, headers: headers)
+          .timeout(const Duration(minutes: 1));
     }
     return response;
   }
