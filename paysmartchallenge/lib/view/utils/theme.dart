@@ -6,6 +6,9 @@ class MyTheme {
         highlightColor: Colors.grey[500],
         primarySwatch: Colors.grey,
         cardColor: Colors.grey[800],
+        iconTheme: IconThemeData(
+          color: Colors.grey[300],
+        ),
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.grey[850],
           elevation: 0,

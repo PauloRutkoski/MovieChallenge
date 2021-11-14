@@ -29,15 +29,19 @@ class MovieCard extends StatelessWidget {
   }
 
   Widget _image() {
+    Widget image = const Icon(Icons.cancel);
+    if (movie.posterPath.isNotEmpty) {
+      image = Image.network(
+        ImageUtils.getUri(movie.posterPath),
+        fit: BoxFit.cover,
+      );
+    }
     return SizedBox(
       width: 100,
       height: 150,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
-        child: Image.network(
-          ImageUtils.getUri(movie.posterPath),
-          fit: BoxFit.cover,
-        ),
+        child: image,
       ),
     );
   }
@@ -47,6 +51,7 @@ class MovieCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             _title(context),
             const SizedBox(

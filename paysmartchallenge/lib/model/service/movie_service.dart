@@ -10,7 +10,7 @@ class MovieService {
   final _genreService = GenreService();
 
   Future<List<Movie>> findUpcoming(int page) async {
-    String path = ServiceUtils.movies + "/upcoming";
+    String path = ServiceUtils.movies + "/upcoming?page=$page";
     Uri uri = ServiceUtils.getApiUri(path);
 
     http.Response response = await ServiceUtils.doGet(uri);

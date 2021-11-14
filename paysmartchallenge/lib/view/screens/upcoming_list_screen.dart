@@ -19,7 +19,17 @@ class _UpcomingListScreenState extends State<UpcomingListScreen> {
   @override
   void initState() {
     super.initState();
-    _bloc.refreshList();
+    _scrollController.addListener(_scrollListener);
+    _bloc.init();
+  }
+
+  _scrollListener() async {
+    ScrollPosition position = _scrollController.position;
+    if (position.pixels == position.maxScrollExtent) {
+      _bloc.page++;
+      _bloc.setState(StateEnum.refresh);
+      await _bloc.refreshList();
+    }
   }
 
   @override
@@ -43,18 +53,48 @@ class _UpcomingListScreenState extends State<UpcomingListScreen> {
             child: CircularProgressIndicator(),
           );
         }
-        return Scrollbar(
-          key: const ValueKey<int>(1),
-          controller: _scrollController,
-          child: ListView.builder(
-            itemCount: _bloc.list.length,
-            itemBuilder: (context, index) {
-              Movie movie = _bloc.list[index];
-              return MovieCard(movie);
-            },
-          ),
-        );
+        return _buildList(snapshot.data);
       },
+    );
+  }
+
+  Widget _buildList(Object? state) {
+    return Scrollbar(
+      key: const ValueKey<int>(1),
+      thickness: 6.0,
+      interactive: true,
+      radius: const Radius.circular(5.0),
+      controller: _scrollController,
+      child: ListView.builder(
+        controller: _scrollController,
+        itemCount: _bloc.list.length + 1,
+        itemBuilder: (context, index) {
+          if (_bloc.list.length == index) {
+            return _buildCardRefresh(state);
+          }
+          Movie movie = _bloc.list[index];
+          return MovieCard(movie);
+        },
+      ),
+    );
+  }
+
+  Widget _buildCardRefresh(Object? state) {
+    if (state != StateEnum.refresh) {
+      return Container();
+    }
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: const [
+        Padding(
+          padding: EdgeInsets.all(20),
+          child: SizedBox(
+            height: 30,
+            width: 30,
+            child: CircularProgressIndicator(),
+          ),
+        )
+      ],
     );
   }
 }

@@ -16,7 +16,7 @@ class Movie {
         json['id'],
         json['title'],
         json['overview'],
-        json['poster_path'],
+        json['poster_path'] ?? "",
         json['genres'],
         DateTime.parse(json['release_date']));
   }
