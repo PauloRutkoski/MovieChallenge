@@ -21,6 +21,18 @@ class MovieService {
     return await _decode(body['results']);
   }
 
+  Future<List<Movie>> findByQuery(String query, int page) async {
+    String path = ServiceUtils.search + "/movie?page=$page&query=$query";
+    Uri uri = ServiceUtils.getApiUri(path);
+
+    http.Response? response = await ServiceUtils.doGet(uri);
+    if (response == null || response.statusCode != 200) {
+      return [];
+    }
+    Map<String, dynamic> body = json.decode(response.body);
+    return await _decode(body['results']);
+  }
+
   Future<List<Movie>> _decode(List<dynamic> maps) async {
     List<Movie> movies = [];
     List<Genre> genres = await _genreService.findAll();

@@ -1,6 +1,5 @@
 import 'package:connectivity/connectivity.dart';
 import 'package:http/http.dart' as http;
-import 'package:logger/logger.dart';
 
 class ServiceUtils {
   static const String _token =
@@ -10,6 +9,7 @@ class ServiceUtils {
 
   static const String genres = "/genre";
   static const String movies = "/movie";
+  static const String search = "/search";
 
   static Map<String, String> headers = {
     'Authorization': 'Bearer $_token',

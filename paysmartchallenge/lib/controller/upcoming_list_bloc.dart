@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:connectivity/connectivity.dart';
 import 'package:logger/logger.dart';
 import 'package:paysmartchallenge/model/entities/movie.dart';
 import 'package:paysmartchallenge/model/service/movie_service.dart';
@@ -13,10 +12,11 @@ class UpcomingListBloc {
   final _movieService = MovieService();
   int page = 1;
   List<Movie> list = [];
+  String query = "";
 
   final _state = BehaviorSubject<StateEnum>.seeded(StateEnum.idle);
 
-  Stream get stateStream => _state.stream;
+  Stream<StateEnum> get stateStream => _state.stream;
   void setState(StateEnum state) => _state.sink.add(state);
 
   Future<void> init() async {
@@ -33,17 +33,27 @@ class UpcomingListBloc {
 
   Future<void> refreshList() async {
     try {
-      List<Movie> movies = await _movieService.findUpcoming(page);
+      List<Movie> movies = [];
+      if (query.trim().isEmpty) {
+        movies = await _movieService.findUpcoming(page);
+      } else {
+        movies = await _movieService.findByQuery(query, page);
+      }
       list.addAll(movies);
       setState(StateEnum.idle);
-    } on TimeoutException catch (e) {
+    } catch (e) {
+      handleException(e);
+    }
+  }
+
+  void handleException(Object e) {
+    if (e is TimeoutException) {
       Notify.error("Timeout on search");
       setState(StateEnum.offline);
-      Logger().e(e);
-    } on Exception catch (e) {
-      Logger().e(e);
+    } else {
       setState(StateEnum.idle);
     }
+    Logger().e(e.toString());
   }
 
   dispose() {

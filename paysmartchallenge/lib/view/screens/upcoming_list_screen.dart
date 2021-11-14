@@ -4,10 +4,11 @@ import 'package:paysmartchallenge/controller/upcoming_list_bloc.dart';
 import 'package:paysmartchallenge/model/entities/movie.dart';
 import 'package:paysmartchallenge/view/screens/upcoming_view_screen.dart';
 import 'package:paysmartchallenge/view/utils/nav.dart';
-import 'package:paysmartchallenge/view/utils/notify.dart';
+
 import 'package:paysmartchallenge/view/utils/state.dart';
 import 'package:paysmartchallenge/view/widgets/movie_card.dart';
 import 'package:paysmartchallenge/view/widgets/offline_info.dart';
+import 'package:paysmartchallenge/view/widgets/search.dart';
 
 class UpcomingListScreen extends StatefulWidget {
   const UpcomingListScreen({Key? key}) : super(key: key);
@@ -18,6 +19,7 @@ class UpcomingListScreen extends StatefulWidget {
 
 class _UpcomingListScreenState extends State<UpcomingListScreen> {
   final _bloc = UpcomingListBloc();
+  final _searchController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -43,27 +45,51 @@ class _UpcomingListScreenState extends State<UpcomingListScreen> {
         title: const Text("Upcoming Movies"),
       ),
       body: SafeArea(
-        child: _buildBody(context),
+        child: Column(
+          children: [
+            _buildSearch(context),
+            _buildBody(context),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildBody(BuildContext context) {
-    return StreamBuilder(
-      stream: _bloc.stateStream,
-      builder: (context, snapshot) {
-        if (snapshot.data == StateEnum.loading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        if (snapshot.data == StateEnum.offline) {
-          return OfflineInfo(
-            onReload: () async => await _refresh(),
-          );
-        }
-        return _buildList(snapshot.data);
+  Widget _buildSearch(BuildContext context) {
+    return SearchWidget(
+      controller: _searchController,
+      onChange: (text) => _bloc.query = text,
+      onClean: () async {
+        FocusScope.of(context).unfocus();
+        _bloc.query = "";
+        _searchController.clear();
+        await _bloc.init();
       },
+      onEditingComplete: () async {
+        FocusScope.of(context).unfocus();
+        await _bloc.init();
+      },
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
+    return Expanded(
+      child: StreamBuilder(
+        stream: _bloc.stateStream,
+        builder: (context, snapshot) {
+          if (snapshot.data == StateEnum.loading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.data == StateEnum.offline) {
+            return OfflineInfo(
+              onReload: () async => await _refresh(),
+            );
+          }
+          return _buildList(snapshot.data);
+        },
+      ),
     );
   }
 

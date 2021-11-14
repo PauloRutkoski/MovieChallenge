@@ -45,7 +45,7 @@ class _UpcomingViewScreenState extends State<UpcomingViewScreen> {
     return Stack(
       children: [
         Image.network(
-          ImageUtils.getLgUri(widget.movie.posterPath),
+          ImageUtils.getLgUri(widget.movie.posterPath ?? ""),
           width: MediaQuery.of(context).size.width,
           loadingBuilder: _onLoadingImage,
           errorBuilder: _onErrorImage,
@@ -120,7 +120,7 @@ class _UpcomingViewScreenState extends State<UpcomingViewScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          widget.movie.title,
+          widget.movie.title ?? "",
           style: Theme.of(context).textTheme.headline1,
         ),
         const SizedBox(
@@ -139,7 +139,7 @@ class _UpcomingViewScreenState extends State<UpcomingViewScreen> {
           height: 10,
         ),
         Text(
-          widget.movie.overview,
+          widget.movie.overview ?? "",
           textAlign: TextAlign.justify,
           style: const TextStyle(fontWeight: FontWeight.w500),
         ),

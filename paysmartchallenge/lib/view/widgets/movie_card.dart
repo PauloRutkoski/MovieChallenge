@@ -39,7 +39,7 @@ class MovieCard extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
         child: Image.network(
-          ImageUtils.getSmUri(movie.posterPath),
+          ImageUtils.getSmUri(movie.posterPath ?? ""),
           fit: BoxFit.cover,
           errorBuilder: _onErrorImage,
         ),
@@ -80,7 +80,7 @@ class MovieCard extends StatelessWidget {
       children: [
         Expanded(
           child: Text(
-            movie.title,
+            movie.title ?? "",
             style: Theme.of(context).textTheme.headline3,
           ),
         ),
