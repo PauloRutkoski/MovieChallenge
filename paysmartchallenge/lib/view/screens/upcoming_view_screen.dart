@@ -92,7 +92,7 @@ class _UpcomingViewScreenState extends State<UpcomingViewScreen> {
         children: [
           Padding(
             padding:
-                EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.70),
+                EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.75),
             child: ClipRRect(
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(25),

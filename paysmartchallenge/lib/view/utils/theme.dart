@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 class MyTheme {
   static ThemeData getTheme() => ThemeData(
-        scaffoldBackgroundColor: Colors.grey[850],
+        scaffoldBackgroundColor: Colors.grey[900],
         highlightColor: Colors.grey[500],
         primarySwatch: Colors.grey,
-        cardColor: Colors.grey[800],
+        cardColor: Colors.grey[850],
         iconTheme: IconThemeData(
           color: Colors.grey[300],
         ),
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.grey[850],
+          backgroundColor: Colors.grey[900],
           elevation: 0,
           titleTextStyle: const TextStyle(
             color: Colors.white,

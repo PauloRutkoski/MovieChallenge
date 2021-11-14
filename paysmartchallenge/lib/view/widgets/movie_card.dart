@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:paysmartchallenge/model/entities/genre.dart';
 import 'package:paysmartchallenge/model/entities/movie.dart';
 import 'package:paysmartchallenge/view/utils/formatter.dart';
 import 'package:paysmartchallenge/view/utils/image_utils.dart';
@@ -34,19 +33,25 @@ class MovieCard extends StatelessWidget {
   }
 
   Widget _image() {
-    Widget image = const Icon(Icons.cancel);
-    if (movie.posterPath.isNotEmpty) {
-      image = Image.network(
-        ImageUtils.getSmUri(movie.posterPath),
-        fit: BoxFit.cover,
-      );
-    }
     return SizedBox(
       width: 100,
       height: 150,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
-        child: image,
+        child: Image.network(
+          ImageUtils.getSmUri(movie.posterPath),
+          fit: BoxFit.cover,
+          errorBuilder: _onErrorImage,
+        ),
+      ),
+    );
+  }
+
+  Widget _onErrorImage(context, error, stackTrace) {
+    return Container(
+      color: Colors.transparent,
+      child: const Center(
+        child: Icon(Icons.cancel),
       ),
     );
   }
