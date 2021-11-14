@@ -16,10 +16,6 @@ class ServiceUtils {
     'Content-Type': 'application/json;charset=utf-8',
   };
 
-  static Future<ConnectivityResult> testConnection() async {
-    return await Connectivity().checkConnectivity();
-  }
-
   static Future<bool> isConnected() async {
     return await Connectivity().checkConnectivity() != ConnectivityResult.none;
   }
