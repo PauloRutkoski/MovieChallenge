@@ -5,7 +5,7 @@ class MyTheme {
         scaffoldBackgroundColor: Colors.grey[900],
         highlightColor: Colors.grey[500],
         primarySwatch: Colors.grey,
-        cardColor: Colors.grey[850],
+        cardColor: Colors.grey[900],
         iconTheme: IconThemeData(
           color: Colors.grey[300],
         ),
