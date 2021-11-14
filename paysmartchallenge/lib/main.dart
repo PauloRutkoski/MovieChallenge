@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:paysmartchallenge/view/screens/upcoming_list_screen.dart';
 import 'package:paysmartchallenge/view/utils/theme.dart';
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent, // transparent status bar
+  ));
   runApp(const PaySmartChallenge());
 }
 

@@ -6,22 +6,27 @@ import 'package:paysmartchallenge/view/utils/image_utils.dart';
 
 class MovieCard extends StatelessWidget {
   final Movie movie;
-  const MovieCard(this.movie, {Key? key}) : super(key: key);
+  final Function()? onTap;
+  const MovieCard(this.movie, {Key? key, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(3.0),
-      child: Card(
-        elevation: 0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              _image(),
-              _info(context),
-            ],
+      child: GestureDetector(
+        onTap: onTap,
+        child: Card(
+          elevation: 0,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                _image(),
+                _info(context),
+              ],
+            ),
           ),
         ),
       ),
@@ -32,7 +37,7 @@ class MovieCard extends StatelessWidget {
     Widget image = const Icon(Icons.cancel);
     if (movie.posterPath.isNotEmpty) {
       image = Image.network(
-        ImageUtils.getUri(movie.posterPath),
+        ImageUtils.getSmUri(movie.posterPath),
         fit: BoxFit.cover,
       );
     }
@@ -82,7 +87,7 @@ class MovieCard extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: Text(_genresText()),
+          child: Text(Formatter.genresText(movie)),
         ),
       ],
     );
@@ -98,17 +103,5 @@ class MovieCard extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  String _genresText() {
-    String text = "";
-    for (int i = 0; i < movie.genres.length; i++) {
-      if (i != 0) {
-        text += ", ";
-      }
-      Genre genre = movie.genres[i];
-      text += genre.name;
-    }
-    return text;
   }
 }

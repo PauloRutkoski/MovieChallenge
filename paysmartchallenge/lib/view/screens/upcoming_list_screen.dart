@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:paysmartchallenge/controller/upcoming_list_bloc.dart';
 import 'package:paysmartchallenge/model/entities/movie.dart';
+import 'package:paysmartchallenge/view/screens/upcoming_view_screen.dart';
+import 'package:paysmartchallenge/view/utils/nav.dart';
 import 'package:paysmartchallenge/view/utils/state.dart';
 import 'package:paysmartchallenge/view/widgets/movie_card.dart';
 
@@ -73,7 +75,12 @@ class _UpcomingListScreenState extends State<UpcomingListScreen> {
             return _buildCardRefresh(state);
           }
           Movie movie = _bloc.list[index];
-          return MovieCard(movie);
+          return MovieCard(
+            movie,
+            onTap: () async {
+              Nav.to(context, UpcomingViewScreen(movie));
+            },
+          );
         },
       ),
     );
