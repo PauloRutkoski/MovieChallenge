@@ -6,6 +6,7 @@ import 'package:paysmartchallenge/view/screens/upcoming_view_screen.dart';
 import 'package:paysmartchallenge/view/utils/nav.dart';
 import 'package:paysmartchallenge/view/utils/state.dart';
 import 'package:paysmartchallenge/view/widgets/movie_card.dart';
+import 'package:paysmartchallenge/view/widgets/offline_info.dart';
 
 class UpcomingListScreen extends StatefulWidget {
   const UpcomingListScreen({Key? key}) : super(key: key);
@@ -54,6 +55,9 @@ class _UpcomingListScreenState extends State<UpcomingListScreen> {
           return const Center(
             child: CircularProgressIndicator(),
           );
+        }
+        if (snapshot.data == StateEnum.offline) {
+          return const OfflineInfo();
         }
         return _buildList(snapshot.data);
       },

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:paysmartchallenge/model/entities/movie.dart';
 import 'package:paysmartchallenge/model/service/movie_service.dart';
 import 'package:paysmartchallenge/view/utils/state.dart';
@@ -17,7 +18,19 @@ class UpcomingListBloc {
 
   Future<void> init() async {
     setState(StateEnum.loading);
-    await refreshList();
+    bool connected = await testConnection();
+    if (connected) {
+      await refreshList();
+    }
+  }
+
+  Future<bool> testConnection() async {
+    ConnectivityResult result = await Connectivity().checkConnectivity();
+    if (result == ConnectivityResult.none) {
+      setState(StateEnum.offline);
+      return false;
+    }
+    return true;
   }
 
   Future<void> refreshList() async {
