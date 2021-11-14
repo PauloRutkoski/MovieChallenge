@@ -57,7 +57,9 @@ class _UpcomingListScreenState extends State<UpcomingListScreen> {
           );
         }
         if (snapshot.data == StateEnum.offline) {
-          return const OfflineInfo();
+          return OfflineInfo(
+            onReload: () async => await _refresh(),
+          );
         }
         return _buildList(snapshot.data);
       },
@@ -71,23 +73,30 @@ class _UpcomingListScreenState extends State<UpcomingListScreen> {
       interactive: true,
       radius: const Radius.circular(5.0),
       controller: _scrollController,
-      child: ListView.builder(
-        controller: _scrollController,
-        itemCount: _bloc.list.length + 1,
-        itemBuilder: (context, index) {
-          if (_bloc.list.length == index) {
-            return _buildCardRefresh(state);
-          }
-          Movie movie = _bloc.list[index];
-          return MovieCard(
-            movie,
-            onTap: () async {
-              Nav.to(context, UpcomingViewScreen(movie));
-            },
-          );
-        },
+      child: RefreshIndicator(
+        onRefresh: _refresh,
+        child: ListView.builder(
+          controller: _scrollController,
+          itemCount: _bloc.list.length + 1,
+          itemBuilder: (context, index) {
+            if (_bloc.list.length == index) {
+              return _buildCardRefresh(state);
+            }
+            Movie movie = _bloc.list[index];
+            return MovieCard(
+              movie,
+              onTap: () async {
+                Nav.to(context, UpcomingViewScreen(movie));
+              },
+            );
+          },
+        ),
       ),
     );
+  }
+
+  Future<void> _refresh() async {
+    await _bloc.init();
   }
 
   Widget _buildCardRefresh(Object? state) {

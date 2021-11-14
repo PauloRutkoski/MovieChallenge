@@ -18,6 +18,8 @@ class UpcomingListBloc {
 
   Future<void> init() async {
     setState(StateEnum.loading);
+    list = [];
+    page = 1;
     bool connected = await testConnection();
     if (connected) {
       await refreshList();

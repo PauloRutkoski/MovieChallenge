@@ -19,8 +19,13 @@ class ServiceUtils {
     return Uri.parse(uri);
   }
 
-  static Future<http.Response> doGet(Uri uri) async {
-    http.Response response = await http.get(uri, headers: headers);
+  static Future<http.Response?> doGet(Uri uri) async {
+    http.Response? response = null;
+    try {
+      response = await http.get(uri, headers: headers);
+    } catch (e) {
+      print(e);
+    }
     return response;
   }
 }

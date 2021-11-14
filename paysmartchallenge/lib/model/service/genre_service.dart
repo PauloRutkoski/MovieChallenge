@@ -9,8 +9,8 @@ class GenreService {
     String path = ServiceUtils.genres + "/movie/list";
     Uri uri = ServiceUtils.getApiUri(path);
 
-    http.Response response = await ServiceUtils.doGet(uri);
-    if (response.statusCode != 200) {
+    http.Response? response = await ServiceUtils.doGet(uri);
+    if (response == null || response.statusCode != 200) {
       return [];
     }
     Map<String, dynamic> body = json.decode(response.body);
