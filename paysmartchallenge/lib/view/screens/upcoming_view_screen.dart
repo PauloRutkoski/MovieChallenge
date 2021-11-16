@@ -44,12 +44,14 @@ class _UpcomingViewScreenState extends State<UpcomingViewScreen> {
   Widget _buildImage(BuildContext context) {
     return Stack(
       children: [
-        Image.network(
-          ImageUtils.getLgUri(widget.movie.posterPath ?? ""),
-          width: MediaQuery.of(context).size.width,
-          loadingBuilder: _onLoadingImage,
-          errorBuilder: _onErrorImage,
-        ),
+        widget.movie.posterPath == null || widget.movie.posterPath!.isEmpty
+            ? _onErrorImage()
+            : Image.network(
+                ImageUtils.getLgUri(widget.movie.posterPath ?? ""),
+                width: MediaQuery.of(context).size.width,
+                loadingBuilder: _onLoadingImage,
+                errorBuilder: (context, exception, stack) => _onErrorImage(),
+              ),
         Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
@@ -64,7 +66,7 @@ class _UpcomingViewScreenState extends State<UpcomingViewScreen> {
     );
   }
 
-  Widget _onErrorImage(context, error, stackTrace) {
+  Widget _onErrorImage() {
     return Container(
       color: Colors.black,
       child: const Center(

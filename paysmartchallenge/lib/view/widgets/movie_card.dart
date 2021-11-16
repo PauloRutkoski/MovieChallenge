@@ -36,18 +36,20 @@ class MovieCard extends StatelessWidget {
     return SizedBox(
       width: 100,
       height: 150,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8.0),
-        child: Image.network(
-          ImageUtils.getSmUri(movie.posterPath ?? ""),
-          fit: BoxFit.cover,
-          errorBuilder: _onErrorImage,
-        ),
-      ),
+      child: movie.posterPath == null || movie.posterPath!.isEmpty
+          ? _onErrorImage()
+          : ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: Image.network(
+                ImageUtils.getSmUri(movie.posterPath ?? ""),
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => _onErrorImage(),
+              ),
+            ),
     );
   }
 
-  Widget _onErrorImage(context, error, stackTrace) {
+  Widget _onErrorImage() {
     return Container(
       color: Colors.transparent,
       child: const Center(
