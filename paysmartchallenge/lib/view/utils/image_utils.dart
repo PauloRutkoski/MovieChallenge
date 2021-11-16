@@ -6,6 +6,6 @@ class ImageUtils {
   }
 
   static String getLgUri(String path) {
-    return _imagePath + "/w500" + path;
+    return _imagePath + "/original" + path;
   }
 }
