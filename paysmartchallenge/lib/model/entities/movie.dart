@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:paysmartchallenge/model/entities/genre.dart';
 
 class Movie {
@@ -23,4 +24,14 @@ class Movie {
           : DateTime.parse(json['release_date']),
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    return other is Movie && other.id != null && id != null && id == other.id;
+  }
+
+  @override
+  int get hashCode => hashValues(id, title);
 }
